@@ -1,59 +1,51 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap'
 import { Component } from 'react';
-
-function sumar(x,y){
-  return <h1 className='text-center fw-bold'>SUMA: {x+y}</h1>
-}
+import Menu from './components/Menu';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import PageDeportes from './components/PageDeportes';
+import PageEquipos from './components/PageEquipos';
+import PageUsuarios from './components/PageUsuarios';
+import PageEventos from './components/PageEventos';
+import MenuInicial from './components/MenuInicial';
+import PageLogin from './components/PageLogin';
+import PageLogout from './components/PageLogout';
+import Page404 from './components/Page404';
+import PageInicioAdmin from './components/PageInicioAdmin';
+import PageInicioAllUsers from './components/PageInicioAllUsers';
 
 class App extends Component {
   render() {
     return (
-      <div className="container">
-        <div class="match bg-success">
-          <div class="match-header">
-            <div class="match-status">Live</div>
-            <div class="match-actions">
-              <button class="btn-icon"><i class="material-icons-outlined">grade</i></button>
-              <button class="btn-icon"><i class="material-icons-outlined">add_alert</i></button>
-            </div>
-          </div>
-          <div class="match-content">
-            <div class="column">
-              <div class="team team--home">
-                <h2 class="team-name bg-white p-3">Chelsea</h2>
-              </div>
-            </div>
-            <div class="column">
-              <div class="match-details">
-                <div class="">
-                  <h3 className='fw-bold text-white'>3 May at 17:30</h3>
-                </div>
-                <div class="match-score text-white">
-                  <span class="match-score-number match-score-number--leading">3</span>
-                  <span class="match-score-divider">:</span>
-                  <span class="match-score-number">1</span>
-                </div>
-                <div class="match-time-lapsed">
-                  72'
-                </div>
-                {/* <div class="match-bet-options">
-                  <button class="match-bet-option">1.48</button>
-                  <button class="match-bet-option">7.84</button>
-                  <button class="match-bet-option">3.24</button>
-                </div> */}
-                <button class="btn btn-primary mt-2">Editar Marcador</button>
-              </div>
-            </div>
-            <div class="column">
-              <div class="team team--away">
-                <h2 class="team-name bg-white p-3"> Man Utd</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-        {sumar(10,20)}
-      </div>
+      <>
+      <Router>
+        <MenuInicial />
+        <Routes>
+          <Route path='/' element={<PageInicioAllUsers />} />
+          <Route path='/inicio' element={<PageInicioAdmin />} />
+          <Route path='/PageLogin' element={<PageLogin/>} />
+          <Route path='/PageLogout' element={<PageLogout />} />
+          <Route path='/PageDeportes' element={<PageDeportes />} />
+          <Route path='/PageEquipos' element={<PageEquipos />} />
+          <Route path='/PageEventos' element={<PageEventos />} />
+          <Route path='/PageUsuarios' element={<PageUsuarios />} />
+          <Route path='/logout' element={<PageLogout />} />
+          <Route path='*' element={<Page404 />}/>
+        </Routes>
+        
+      </Router>
+      {/* <Router>
+        <Menu />
+
+        <Routes>
+          <Route path='/' element={<PageInicio />} />
+
+        </Routes>
+        
+      </Router> */}
+  
+      </>
     );
   }
 }
