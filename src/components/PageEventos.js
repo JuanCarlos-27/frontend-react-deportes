@@ -26,8 +26,20 @@ class PageEventos extends Component {
             eve_hora: '',
         }
     }
+    // validarCampos = (objeto) =>{
+    //     if(objeto.eve_equipo1 || objeto.eve_equipo2 || objeto.eve_tipo_deporte || objeto.eve_fecha || objeto.eve_hora){
+    //         Swal.fire({      /// Muestra mensaje de confirmado.
+    //             position: 'center',
+    //             icon: 'error',
+    //             title: "¡Debe llenar los campos!",
+    //             showConfirmButton: false,
+    //             timer: 1500
+    //         })
+    //         return
+    //     }
+    // }
     peticionGetEventos = () => {
-        axios.get(url+'/consulta').then(response => {
+        axios.get(url + '/consulta').then(response => {
             this.setState({ dataEventos: response.data })
         }).catch(error => {
             console.log(error.message);
@@ -48,24 +60,56 @@ class PageEventos extends Component {
         })
     }
     peticionPost = async (e) => {
-        await axios.post(url, this.state.form).then(response => {
+        await axios.post(url, this.state.form).then(res => {
             this.modalInsertar(); /// para cerrar la modal
-            this.peticionGet(); /// para actualizar el listado
+            this.peticionGetEventos(); /// para actualizar el listado
+
             Swal.fire({      /// Muestra mensaje de confirmado.
-                position: 'top-end',
+                position: 'center',
                 icon: 'success',
                 title: "¡Se ha registrado correctamente!",
                 showConfirmButton: false,
                 timer: 1500
             })
+            console.log(res)
         }).catch(error => {
-            console.log(error.message);
+            Swal.fire({      /// Muestra mensaje de confirmado.
+                position: 'center',
+                icon: 'error',
+                title: "Debe llenar todos los campos",
+                showConfirmButton: false,
+                timer: 1500
+            })
+        })
+    }
+    peticionDelete = (id) => {
+        Swal.fire({
+            title: '¿Esta segur@?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Si!',
+            cancelButtonText: 'Cancelar'
+        }).then(result => {
+            console.log(result.isConfirmed)
+            if (result.isConfirmed) {
+                axios.delete(url + '/eve_id/' + id).then(res => {
+                    this.peticionGetEventos();
+                    Swal.fire(
+                        '¡Eliminado!',
+                        'Eventos eliminado',
+                        'success'
+                    )
+                })
+
+            }
         })
     }
     modalInsertar = () => {
         this.setState({ modalInsertar: !this.state.modalInsertar })
     }
-    handleChange = async e => {
+    handleChange = async (e) => {
         e.persist();
         await this.setState({
             form: {
@@ -73,11 +117,8 @@ class PageEventos extends Component {
                 [e.target.name]: e.target.value
             }
         });
-        console.log(this.state.form);
     }
-    handleSelect = e =>{
-        console.log(e)
-    }
+
     componentDidMount() {
         this.peticionGetEventos();
         this.peticionGetEquipos();
@@ -91,11 +132,11 @@ class PageEventos extends Component {
         }
         return <div className="container">
             <button className="btn btn-success my-2 fw-bold shadow" onClick={() => { this.setState({ form: null, tipoModal: 'insertar' }); this.modalInsertar() }}>Crear Evento</button>
-            <div className="row d-flex justify-content-around">
+            <div className="row d-flex justify-content-around mb-5">
                 {
                     this.state.dataEventos.map(evento => {
                         return (
-                            <div className="card col-md-5 col-12 border border-dark my-1" key={evento.eve_id} >
+                            <div className="card col-md-5 col-12 border border-dark my-3 card-sports" key={evento.eve_id} >
                                 <div className="d-flex flex-wrap text-center px-1">
                                     <div className="col-md-4 col-12 d-flex justify-content-center flex-wrap">
                                         <div className="team-logo col-12">
@@ -115,6 +156,10 @@ class PageEventos extends Component {
                                             <span className="match-score-divider">:</span>
                                             <span className="match-score-number">{evento.eve_marcador_equipo2}</span>
                                         </div>
+                                        <div className="col-12 mt-3 mb-2" >
+                                            <button className="btn btn-warning mx-1" ><FontAwesomeIcon icon={faEdit} /></button>
+                                            <button className="btn btn-danger mx-1" onClick={() => { this.peticionDelete(evento.eve_id) }} ><FontAwesomeIcon icon={faTrash} /></button>
+                                        </div>
                                         {/* <div className="col-12 match-time-lapsed">
                                             00'
                                         </div> */}
@@ -125,6 +170,7 @@ class PageEventos extends Component {
                                         </div>
                                         <h2 className="lh-1">{evento.equipo2} </h2>
                                     </div>
+
                                 </div>
                             </div>
                         )
@@ -139,17 +185,16 @@ class PageEventos extends Component {
                             <p className="text-center h4">Modificar Evento</p>
                     }
                 </ModalHeader>
-
                 <ModalBody>
                     <div className="border border-dark">
                         <div className="d-flex flex-wrap text-center">
                             <div className="col-md-4 col-12 d-flex justify-content-center flex-wrap">
                                 <div className="team-logo col-12">
-                                    <select className="text-center rounded-bottom border border-dark shadow-lg">
-                                        <option>Equipo 1 <FontAwesomeIcon icon={faPlus} /></option>
+                                    <select className="text-center rounded-bottom border border-dark shadow-lg" name="eve_equipo1" onChange={this.handleChange}>
+                                        <option value="default" >Equipo 1</option>
                                         {this.state.dataEquipos.map(equipo => {
                                             return (
-                                                <option value={equipo.equ_id} key={equipo.equ_id} >{equipo.equ_nombre}</option>
+                                                <option value={equipo.equ_id} key={equipo.equ_id}>{equipo.equ_nombre}</option>
                                             )
                                         })}
                                     </select>
@@ -158,9 +203,9 @@ class PageEventos extends Component {
                             </div>
                             <div className="col-md-4 col-12 d-flex justify-content-center flex-wrap">
                                 <div className="">
-                                    <select className="col-12 text-center h5 bg-info rounded-bottom border-top-0 border border-dark shadow-lg" id="ddlEquipo1">
-                                        <option >Seleccionar <FontAwesomeIcon icon={faPlus} /></option>
-                                        {this.state.dataDeportes.map(deporte=>{
+                                    <select className="col-12 text-center h5 bg-info rounded-bottom border-top-0 border border-dark shadow-lg" name="eve_tipo_deporte" onChange={this.handleChange}>
+                                        <option value="default">Seleccionar</option>
+                                        {this.state.dataDeportes.map(deporte => {
                                             return (
                                                 <option value={deporte.dep_id} key={deporte.dep_id}>{deporte.dep_nombre}</option>
                                             )
@@ -169,9 +214,9 @@ class PageEventos extends Component {
                                 </div>
                                 <div className="col-12 mb-3">
                                     <label>Fecha</label>
-                                    <input type="date" className="fw-bold text-center" id="time" />
+                                    <input type="date" className="fw-bold text-center" id="date" name="eve_fecha" onChange={this.handleChange} />
                                     <label>Hora</label>
-                                    <input type="time" className="fw-bold text-center" id="time" />
+                                    <input type="time" className="fw-bold text-center" id="time" name="eve_hora" onChange={this.handleChange} />
                                 </div>
                                 <div className="col-12">
                                     <span className="match-score-number">0</span>
@@ -184,8 +229,8 @@ class PageEventos extends Component {
                             </div>
                             <div className="col-md-4 col-12 d-flex justify-content-center flex-wrap">
                                 <div className="team-logo col-12">
-                                    <select className="text-center rounded-bottom border border-dark shadow-lg">
-                                        <option >Equipo 2 <FontAwesomeIcon icon={faPlus} /></option>
+                                    <select className="text-center rounded-bottom border border-dark shadow-lg" name="eve_equipo2" onChange={this.handleChange} >
+                                        <option value="default">Equipo 2</option>
                                         {this.state.dataEquipos.map(equipo => {
                                             return (
                                                 <option value={equipo.equ_id} key={equipo.equ_id} >{equipo.equ_nombre}</option>

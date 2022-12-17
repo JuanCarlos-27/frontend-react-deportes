@@ -9,7 +9,7 @@ class PageInicioAdmin extends Component{
             window.location.href="/PageLogin"
             return
         }
-        return <h1 className="container">Bienvenido {cookies.get("usu_nombres")}</h1>
+        return <h1 className="container">Bienvenid@ {cookies.get("usu_nombres")}</h1>
     }
 }
 export default PageInicioAdmin

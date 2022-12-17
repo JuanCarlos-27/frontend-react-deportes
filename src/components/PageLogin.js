@@ -47,11 +47,13 @@ class PageLogin extends Component {
                     Swal.fire({      /// Muestra mensaje de bienvenida.
                         position: 'top-center',
                         icon: 'success',
-                        title: `¡Bienvenido ${resp.usu_nombres}!`,
+                        title: `¡Bienvenid@ ${resp.usu_nombres}!`,
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    window.location.href = './inicio'
+                    setTimeout(() => {
+                        window.location.href = './inicio'
+                    }, 1500);
                 } else {
                     Swal.fire({
                         icon: 'error',

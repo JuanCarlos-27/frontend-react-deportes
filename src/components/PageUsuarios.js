@@ -45,7 +45,13 @@ class PageUsuarios extends Component {
                 timer: 1500
             })
         }).catch(error => {
-            console.log(error.message);
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: "Debe llenar todos los campos",
+                showConfirmButton: false,
+                timer: 1500
+            })
         })
     }
     peticionPut = () => {
@@ -64,7 +70,7 @@ class PageUsuarios extends Component {
     }
     peticionDelete = (id) => {
         Swal.fire({
-            title: '¿Esta seguro?',
+            title: '¿Esta segur@?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -160,8 +166,8 @@ class PageUsuarios extends Component {
                     <ModalHeader style={{ display: 'block' }}>
                         {
                             this.state.tipoModal === 'insertar' ?
-                                <h4 className="text-center">Agregar Usuario</h4> :
-                                <h4 className="text-center">Editar Usuario</h4>
+                                <p className="text-center h4">Agregar Usuario</p> :
+                                <p className="text-center h4">Editar Usuario</p>
                         }
                     </ModalHeader>
 
@@ -173,13 +179,13 @@ class PageUsuarios extends Component {
                                     <input className="form-control" type="text" name="usu_id" onChange={this.handleChange} disabled value={form ? form.usu_id : this.state.length + 1} />
                                 </> : ""}
                             <label htmlFor="usu_nombres">Nombre</label>
-                            <input className="form-control" type="text" name="usu_nombres" id="usu_nombres" onChange={this.handleChange} value={form ? form.usu_nombres : ''} required="true" />
+                            <input className="form-control" type="text" name="usu_nombres" id="usu_nombres" onChange={this.handleChange} value={form ? form.usu_nombres : ''} />
                             <label htmlFor="usu_apellidos">Apellido</label>
-                            <input className="form-control" type="text" name="usu_apellidos" id="usu_apellidos" onChange={this.handleChange} value={form ? form.usu_apellidos : ''} required="true" />
+                            <input className="form-control" type="text" name="usu_apellidos" id="usu_apellidos" onChange={this.handleChange} value={form ? form.usu_apellidos : ''} />
                             <label htmlFor="usu_email">Email</label>
-                            <input className="form-control" type="email" name="usu_email" id="usu_email" onChange={this.handleChange} value={form ? form.usu_email : ''} required="true" />
+                            <input className="form-control" type="email" name="usu_email" id="usu_email" onChange={this.handleChange} value={form ? form.usu_email : ''} />
                             <label htmlFor="usu_clave">Clave</label>
-                            <input className="form-control" type="password" name="usu_clave" id="usu_clave" onChange={this.handleChange} value={form ? form.usu_clave : ''} required="true" />
+                            <input className="form-control" type="password" name="usu_clave" id="usu_clave" onChange={this.handleChange} value={form ? form.usu_clave : ''} />
                         </form>
                     </ModalBody>
                     <ModalFooter>

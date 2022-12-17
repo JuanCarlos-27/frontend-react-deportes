@@ -42,7 +42,13 @@ class PageDeportes extends Component {
                 timer: 1500
             })
         }).catch(error => {
-            console.log(error.message);
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: "Debe llenar todos los campos",
+                showConfirmButton: false,
+                timer: 1500
+            })
         })
     }
     peticionPut = () => {
@@ -61,7 +67,7 @@ class PageDeportes extends Component {
     }
     peticionDelete = (id) => {
         Swal.fire({
-            title: '¿Esta seguro?',
+            title: '¿Esta segur@?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
