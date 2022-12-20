@@ -84,6 +84,12 @@ class PageDeportes extends Component {
                         'Registro eliminado',
                         'success'
                     )
+                }).catch(e =>{
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: "No puedes eliminarlo ya que hay eventos asociados",
+                    })
                 })
 
             }
@@ -129,7 +135,7 @@ class PageDeportes extends Component {
             window.location.href="/PageLogin"
             return
         }
-        return <div className="container p-3">
+        return <div className="container container-image p-4">
             <button className="btn btn-success shadow my-2 fw-bold" onClick={() => { this.setState({ form: null, tipoModal: 'insertar' }); this.modalInsertar() }}>Agregar Nuevo</button>
             <div className="row row-cols-1 row-cols-md-3 g-4">
                 {

@@ -1,0 +1,169 @@
+@import url('https://fonts.cdnfonts.com/css/soccer-scoreboard');
+/*
+*{
+  font-family: 'Soccer Scoreboar', Verdana, Geneva, Tahoma, sans-serif;
+} */
+
+.card-sports-initial{
+	box-shadow: 12px 12px 12px rgb(190, 186, 184);
+}
+.card-sports-initial:hover{
+	box-shadow: 5px 5px 5px rgb(190, 186, 184) ;
+}
+
+.navbar{
+	box-shadow: 4px 2px 12px #49413c;
+}
+
+label{
+	font-weight: bold;
+}
+.team-name{
+	text-align: center;
+	font-size: 26px;
+}
+.match-date{
+	font-size: 21px;
+	text-align: center;
+}
+.match-header {
+	display: flex;
+	flex-basis: 100%;
+	padding: 5px;
+	border-bottom: 2px solid rgba(#303030, 0.1);
+}
+
+.match-status {
+	padding: 8px 12px;
+	border-radius: 6px;
+	font-weight: 600;
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	line-height: 1;
+	margin-right: auto;
+}
+.match-tournament {
+	display: flex;
+	align-items: center;
+	font-weight: 600;
+}
+
+.img-team{
+	position: absolute;
+	width: 70px;
+}
+
+.match-content {
+	display: flex;
+	position: relative;
+}
+
+.column {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.team {
+	display: flex;
+	flex-direction:column;
+	align-items: center;
+}
+
+.team-logo {
+	width: 100px;
+	height: 100px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background-color: var(--color-bg-primary);
+	box-shadow: 0 4px 4px 0 rgba(#303030, 0.15),
+		0 0 0 15px var(--color-bg-secondary);
+
+}
+.match-details {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.match-score {
+	margin-top: 12px;
+	display: flex;
+	align-items: center;
+}
+
+.match-score-number {
+	font-size: 50px;
+	font-weight: 600;
+	line-height: 1;
+	color: #000;
+	font-family: 'Soccer Scoreboard', Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.match-score-divider {
+	font-size: 28px;
+	font-weight: 700;
+	line-height: 1;
+	color: #000;
+	margin-left: 10px;
+	margin-right: 10px;
+	font-family: 'Soccer Scoreboard', Verdana, Geneva, Tahoma, sans-serif;	
+}
+
+.match-time-lapsed, .title-main  {
+	font-family: 'Soccer Scoreboard', Verdana, Geneva, Tahoma, sans-serif;	
+	color: #000;
+	font-size: 26px;
+	font-weight: bold;
+}
+
+.match-referee {
+	margin-top: 12px;
+}
+
+.wrap-error {
+    background-color: #667bf2;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cpolygon fill='%23f0b608' points='957 450 539 900 1396 900'/%3E%3Cpolygon fill='%23e6d710' points='957 450 872.9 900 1396 900'/%3E%3Cpolygon fill='%23e7af05' points='-60 900 398 662 816 900'/%3E%3Cpolygon fill='%23e7d808' points='337 900 398 662 816 900'/%3E%3Cpolygon fill='%23d8a408' points='1203 546 1552 900 876 900'/%3E%3Cpolygon fill='%23f1e213' points='1203 546 1552 900 1162 900'/%3E%3Cpolygon fill='%23f0b607' points='641 695 886 900 367 900'/%3E%3Cpolygon fill='%23e4d506' points='587 900 641 695 886 900'/%3E%3Cpolygon fill='%23eab822' points='1710 900 1401 632 1096 900'/%3E%3Cpolygon fill='%23e8da14' points='1710 900 1401 632 1365 900'/%3E%3Cpolygon fill='%23e8b008' points='1210 900 971 687 725 900'/%3E%3Cpolygon fill='%23edde14' points='943 900 1210 900 971 687'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: cover;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+.wrap-error h1 {
+    font-size: 6.875rem;
+    letter-spacing: -13px;
+    line-height: 1;
+    font-family: montserrat, sans-serif;
+}
+
+.container-image{
+	background-image: url("https://img.freepik.com/fotos-premium/campo-futbol-o-campo-futbol-sobre-fondo-hierba-verde_518421-1107.jpg?w=2000");
+}
+
+.scroll-left {
+	height: 70px;	
+	overflow: hidden;
+	position: relative;
+}
+.scroll-left span {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	line-height: 50px;
+	text-align: center;
+	/* Starting position */
+	transform:translateX(100%);
+	/* Apply animation to this element */
+	animation: scroll-left 10s linear infinite;
+}
+
+   /* Move it (define the animation) */
+@keyframes scroll-left {
+	0%{
+		transform: translateX(0%); 		
+	}
+	100% {
+		transform: translateX(-160%); 
+	}
+ }

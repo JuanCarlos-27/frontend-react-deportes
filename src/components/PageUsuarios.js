@@ -27,6 +27,8 @@ class PageUsuarios extends Component {
     peticionGet = () => {
         axios.get(url).then(response => {
             this.setState({ data: response.data })
+            console.log('Petición GET exitosa! ')
+            console.log(response.data)
         }).catch(error => {
             console.log(error.message);
         })
@@ -34,7 +36,6 @@ class PageUsuarios extends Component {
     peticionPost = async (e) => {
         //delete this.state.form.usu_id
         await axios.post(url, this.state.form).then(response => {
-
             this.modalInsertar(); /// para cerrar la modal
             this.peticionGet(); /// para actualizar el listado
             Swal.fire({      /// Muestra mensaje de confirmado.
@@ -126,7 +127,7 @@ class PageUsuarios extends Component {
             return
         }
         return (
-            <div className="container p-3">
+            <div className="container p-3 container-image">
                 <button className="btn btn-success my-3 shadow fw-bold" onClick={() => { this.setState({ form: null, tipoModal: 'insertar' }); this.modalInsertar() }}>Agregar Usuario</button>
                 <table className="table table-striped shadow table-light text-center">
                     <thead className="table-secondary">

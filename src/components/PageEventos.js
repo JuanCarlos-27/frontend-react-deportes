@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { faEdit, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowAltCircleLeft, faArrowAltCircleRight, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import axios from "axios";
@@ -24,20 +24,10 @@ class PageEventos extends Component {
             eve_tipo_deporte: '',
             eve_fecha: '',
             eve_hora: '',
+            eve_imagen_e1: '',
+            eve_imagen_e2: '',
         }
     }
-    // validarCampos = (objeto) =>{
-    //     if(objeto.eve_equipo1 || objeto.eve_equipo2 || objeto.eve_tipo_deporte || objeto.eve_fecha || objeto.eve_hora){
-    //         Swal.fire({      /// Muestra mensaje de confirmado.
-    //             position: 'center',
-    //             icon: 'error',
-    //             title: "¡Debe llenar los campos!",
-    //             showConfirmButton: false,
-    //             timer: 1500
-    //         })
-    //         return
-    //     }
-    // }
     peticionGetEventos = () => {
         axios.get(url + '/consulta').then(response => {
             this.setState({ dataEventos: response.data })
@@ -109,6 +99,25 @@ class PageEventos extends Component {
     modalInsertar = () => {
         this.setState({ modalInsertar: !this.state.modalInsertar })
     }
+    seleccionarEvento = (evento) => {
+        this.setState({
+            tipoModal: 'actualizar',
+            form: {
+                eve_id: evento.eve_id,
+                eve_equipo1: evento.equipo1,
+                eve_equipo2: evento.equipo2,
+                eve_marcador_equipo1: evento.eve_marcador_equipo1,
+                eve_marcador_equipo2: evento.eve_marcador_equipo2,
+                eve_tipo_deporte: evento.dep_nombre,
+                eve_fecha: evento.eve_fecha,
+                eve_hora: evento.eve_hora,
+                eve_imagen_e1: evento.equipo1_img,
+                eve_imagen_e2: evento.equipo2_img
+            }
+        })
+        console.log(this.state.form)
+        console.log(evento)
+    }
     handleChange = async (e) => {
         e.persist();
         await this.setState({
@@ -130,13 +139,13 @@ class PageEventos extends Component {
             window.location.href = "/PageLogin"
             return
         }
-        return <div className="container">
+        return <div className="container-image container p-3">
             <button className="btn btn-success my-2 fw-bold shadow" onClick={() => { this.setState({ form: null, tipoModal: 'insertar' }); this.modalInsertar() }}>Crear Evento</button>
             <div className="row d-flex justify-content-around mb-5">
                 {
                     this.state.dataEventos.map(evento => {
                         return (
-                            <div className="card col-md-5 col-12 border border-dark my-3 card-sports" key={evento.eve_id} >
+                            <div className="card card-sports-initial col-md-5 col-12 border border-dark my-3 card-sports" key={evento.eve_id} >
                                 <div className="d-flex flex-wrap text-center px-1">
                                     <div className="col-md-4 col-12 d-flex justify-content-center flex-wrap">
                                         <div className="team-logo col-12">
@@ -157,12 +166,9 @@ class PageEventos extends Component {
                                             <span className="match-score-number">{evento.eve_marcador_equipo2}</span>
                                         </div>
                                         <div className="col-12 mt-3 mb-2" >
-                                            <button className="btn btn-warning mx-1" ><FontAwesomeIcon icon={faEdit} /></button>
+                                            <button className="btn btn-warning mx-1" onClick={() => { this.seleccionarEvento(evento); this.modalInsertar() }} ><FontAwesomeIcon icon={faEdit} /></button>
                                             <button className="btn btn-danger mx-1" onClick={() => { this.peticionDelete(evento.eve_id) }} ><FontAwesomeIcon icon={faTrash} /></button>
                                         </div>
-                                        {/* <div className="col-12 match-time-lapsed">
-                                            00'
-                                        </div> */}
                                     </div>
                                     <div className="col-md-4 col-12 d-flex justify-content-center flex-wrap">
                                         <div className="team-logo col-12">
@@ -190,16 +196,20 @@ class PageEventos extends Component {
                         <div className="d-flex flex-wrap text-center">
                             <div className="col-md-4 col-12 d-flex justify-content-center flex-wrap">
                                 <div className="team-logo col-12">
-                                    <select className="text-center rounded-bottom border border-dark shadow-lg" name="eve_equipo1" onChange={this.handleChange}>
-                                        <option value="default" >Equipo 1</option>
-                                        {this.state.dataEquipos.map(equipo => {
-                                            return (
-                                                <option value={equipo.equ_id} key={equipo.equ_id}>{equipo.equ_nombre}</option>
-                                            )
-                                        })}
-                                    </select>
+                                    {this.state.tipoModal === 'actualizar' ?
+                                        <img className="img-team" src={form.eve_imagen_e1} alt="team1" />
+                                        :
+                                        <select className="text-center rounded-bottom border border-dark shadow-lg" name="eve_equipo1" onChange={this.handleChange}>
+                                            <option value="default" >Equipo 1</option>
+                                            {this.state.dataEquipos.map(equipo => {
+                                                return (
+                                                    <option value={equipo.equ_id} key={equipo.equ_id}>{equipo.equ_nombre}</option>
+                                                )
+                                            })}
+                                        </select>
+                                    }
                                 </div>
-                                <h2 className="">Equipo 1</h2>
+                                <h2>{this.state.tipoModal === 'actualizar' ? form.eve_equipo1 : "Equipo 1"}</h2>
                             </div>
                             <div className="col-md-4 col-12 d-flex justify-content-center flex-wrap">
                                 <div className="">
@@ -214,14 +224,25 @@ class PageEventos extends Component {
                                 </div>
                                 <div className="col-12 mb-3">
                                     <label>Fecha</label>
-                                    <input type="date" className="fw-bold text-center" id="date" name="eve_fecha" onChange={this.handleChange} />
+                                    <input type="date" className="fw-bold text-center" id="date" name="eve_fecha" onChange={this.handleChange} value={form ? form.eve_fecha.slice(0, 10) : ""} />
                                     <label>Hora</label>
-                                    <input type="time" className="fw-bold text-center" id="time" name="eve_hora" onChange={this.handleChange} />
+                                    <input type="time" className="fw-bold text-center" id="time" name="eve_hora" onChange={this.handleChange} value={form ? form.eve_hora : ""} />
                                 </div>
                                 <div className="col-12">
-                                    <span className="match-score-number">0</span>
-                                    <span className="match-score-divider">:</span>
-                                    <span className="match-score-number">0</span>
+                                    {this.state.tipoModal === 'actualizar' ?
+                                        <>
+                                            <FontAwesomeIcon icon={faArrowAltCircleLeft} className="align-items-center h4" />
+                                            <span className="">0</span>
+                                            <span className="">:</span>
+                                            <span className="">0</span>
+                                            <FontAwesomeIcon icon={faArrowAltCircleRight} className="align-items-center h4" />
+                                        </> :
+                                        <>
+                                            <span className="match-score-number">0</span>
+                                            <span className="match-score-divider">:</span>
+                                            <span className="match-score-number">0</span>
+                                        </>
+                                    }
                                 </div>
                                 {/* <div className="col-12 match-time-lapsed w-100">
                                     00'
@@ -229,16 +250,20 @@ class PageEventos extends Component {
                             </div>
                             <div className="col-md-4 col-12 d-flex justify-content-center flex-wrap">
                                 <div className="team-logo col-12">
-                                    <select className="text-center rounded-bottom border border-dark shadow-lg" name="eve_equipo2" onChange={this.handleChange} >
-                                        <option value="default">Equipo 2</option>
-                                        {this.state.dataEquipos.map(equipo => {
-                                            return (
-                                                <option value={equipo.equ_id} key={equipo.equ_id} >{equipo.equ_nombre}</option>
-                                            )
-                                        })}
-                                    </select>
+                                    {this.state.tipoModal === 'actualizar' ?
+                                        <img className="img-team" src={form.eve_imagen_e2} alt="team2" />
+                                        :
+                                        <select className="text-center rounded-bottom border border-dark shadow-lg" name="eve_equipo2" onChange={this.handleChange}>
+                                            <option value="default" >Equipo 2</option>
+                                            {this.state.dataEquipos.map(equipo => {
+                                                return (
+                                                    <option value={equipo.equ_id} key={equipo.equ_id}>{equipo.equ_nombre}</option>
+                                                )
+                                            })}
+                                        </select>
+                                    }
                                 </div>
-                                <h2 className="">Equipo 2</h2>
+                                <h2>{this.state.tipoModal === 'actualizar' ? form.eve_equipo2 : "Equipo 2"}</h2>
                             </div>
                         </div>
                     </div>

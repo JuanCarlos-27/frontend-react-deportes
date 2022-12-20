@@ -74,7 +74,6 @@ class PageEquipos extends Component {
             confirmButtonText: '¡Si!',
             cancelButtonText: 'Cancelar'
         }).then(result => {
-            console.log(result.isConfirmed)
             if (result.isConfirmed) {
                 axios.delete(url + field_id + id).then(res => {
                     this.peticionGet();
@@ -83,6 +82,12 @@ class PageEquipos extends Component {
                         'Registro eliminado',
                         'success'
                     )
+                }).catch(e =>{
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: "No puedes eliminarlo ya que hay eventos asociados",
+                    })
                 })
 
             }
@@ -123,14 +128,14 @@ class PageEquipos extends Component {
             window.location.href="/PageLogin"
             return
         }
-        return <div className="container p-3">
+        return <div className="container container-image p-3">
             <button className="btn btn-success my-2 fw-bold shadow" onClick={() => { this.setState({ form: null, tipoModal: 'insertar' }); this.modalInsertar() }}>Agregar Nuevo</button>
             <div className="row g-4 shadow">
                 {
                     this.state.data.map(equipo => {
                         return (
                             <div className="col-md-3 col-sm-12" key={equipo.equ_id}>
-                                <div className="card card-sports border-dark p-3 d-flex justify-content-center">
+                                <div className="card card-sports-initial border-dark p-3 d-flex justify-content-center">
                                     <img src={equipo.equ_imagen ? equipo.equ_imagen : "https://www.control.vg/wp-content/themes/crystalskull/img/defaults/default.jpg"} height="200" width="200" className="card-img-top" alt="equipo-imagen" />
                                     <div className="card-body">
                                         <p className="card-title h5 text-center">{equipo.equ_nombre}</p>
