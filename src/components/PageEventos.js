@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { faArrowAltCircleLeft, faArrowAltCircleRight, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import axios from "axios";
@@ -7,7 +7,7 @@ import Cookies from 'universal-cookie'
 import Swal from "sweetalert2";
 
 const cookies = new Cookies();
-const url = 'http://127.0.0.1:9000/api/eventos'
+const url = 'http://141.148.53.245:9000/api/eventos'
 class PageEventos extends Component {
     state = {
         dataEventos: [],
@@ -15,6 +15,8 @@ class PageEventos extends Component {
         dataDeportes: [],
         modalInsertar: false,
         tipoModal: '',
+        increase_score: 0,
+        input_disabled: false,
         form: {
             eve_id: '',
             eve_equipo1: '',
@@ -24,9 +26,11 @@ class PageEventos extends Component {
             eve_tipo_deporte: '',
             eve_fecha: '',
             eve_hora: '',
-            eve_imagen_e1: '',
-            eve_imagen_e2: '',
-        }
+        },
+        eve_equipo1_nombre:'',
+        eve_equipo2_nombre:'',
+        eve_imagen_e1: '',
+        eve_imagen_e2: '',
     }
     peticionGetEventos = () => {
         axios.get(url + '/consulta').then(response => {
@@ -36,14 +40,14 @@ class PageEventos extends Component {
         })
     }
     peticionGetEquipos = () => {
-        axios.get('http://127.0.0.1:9000/api/equipos/').then(response => {
+        axios.get('http://141.148.53.245:9000/api/equipos/').then(response => {
             this.setState({ dataEquipos: response.data })
         }).catch(error => {
             console.log(error.message);
         })
     }
     peticionGetDeportes = () => {
-        axios.get('http://127.0.0.1:9000/api/deportes/').then(response => {
+        axios.get('http://141.148.53.245:9000/api/deportes/').then(response => {
             this.setState({ dataDeportes: response.data })
         }).catch(error => {
             console.log(error.message);
@@ -53,7 +57,6 @@ class PageEventos extends Component {
         await axios.post(url, this.state.form).then(res => {
             this.modalInsertar(); /// para cerrar la modal
             this.peticionGetEventos(); /// para actualizar el listado
-
             Swal.fire({      /// Muestra mensaje de confirmado.
                 position: 'center',
                 icon: 'success',
@@ -61,12 +64,33 @@ class PageEventos extends Component {
                 showConfirmButton: false,
                 timer: 1500
             })
-            console.log(res)
         }).catch(error => {
             Swal.fire({      /// Muestra mensaje de confirmado.
                 position: 'center',
                 icon: 'error',
                 title: "Debe llenar todos los campos",
+                showConfirmButton: false,
+                timer: 1500
+            })
+        })
+    }
+    peticionPut = () => {
+        // console.log(Object.keys(this.state.form)[0])
+        axios.put(url +'/eve_id/' + this.state.form.eve_id, this.state.form).then(res => {
+            this.modalInsertar();
+            this.peticionGetEventos();
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: "¡Actualizado correctamente!",
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }).catch(error => {
+            Swal.fire({   
+                position: 'center',
+                icon: 'error',
+                title: "Ocurrio un error",
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -82,7 +106,6 @@ class PageEventos extends Component {
             confirmButtonText: '¡Si!',
             cancelButtonText: 'Cancelar'
         }).then(result => {
-            console.log(result.isConfirmed)
             if (result.isConfirmed) {
                 axios.delete(url + '/eve_id/' + id).then(res => {
                     this.peticionGetEventos();
@@ -104,19 +127,19 @@ class PageEventos extends Component {
             tipoModal: 'actualizar',
             form: {
                 eve_id: evento.eve_id,
-                eve_equipo1: evento.equipo1,
-                eve_equipo2: evento.equipo2,
+                eve_equipo1: evento.id_equipo1,
+                eve_equipo2: evento.id_equipo2,
                 eve_marcador_equipo1: evento.eve_marcador_equipo1,
                 eve_marcador_equipo2: evento.eve_marcador_equipo2,
-                eve_tipo_deporte: evento.dep_nombre,
-                eve_fecha: evento.eve_fecha,
+                eve_tipo_deporte: evento.dep_id,
+                eve_fecha: evento.eve_fecha.slice(0,10),
                 eve_hora: evento.eve_hora,
-                eve_imagen_e1: evento.equipo1_img,
-                eve_imagen_e2: evento.equipo2_img
-            }
+            },
+            eve_equipo1_nombre: evento.equipo1,
+            eve_equipo2_nombre: evento.equipo2,
+            eve_imagen_e1: evento.equipo1_img,
+            eve_imagen_e2: evento.equipo2_img
         })
-        console.log(this.state.form)
-        console.log(evento)
     }
     handleChange = async (e) => {
         e.persist();
@@ -197,7 +220,7 @@ class PageEventos extends Component {
                             <div className="col-md-4 col-12 d-flex justify-content-center flex-wrap">
                                 <div className="team-logo col-12">
                                     {this.state.tipoModal === 'actualizar' ?
-                                        <img className="img-team" src={form.eve_imagen_e1} alt="team1" />
+                                        <img className="img-team" src={this.state.eve_imagen_e1} alt="team1" />
                                         :
                                         <select className="text-center rounded-bottom border border-dark shadow-lg" name="eve_equipo1" onChange={this.handleChange}>
                                             <option value="default" >Equipo 1</option>
@@ -209,7 +232,7 @@ class PageEventos extends Component {
                                         </select>
                                     }
                                 </div>
-                                <h2>{this.state.tipoModal === 'actualizar' ? form.eve_equipo1 : "Equipo 1"}</h2>
+                                <h2>{this.state.tipoModal === 'actualizar' ? this.state.eve_equipo1_nombre : "Equipo 1"}</h2>
                             </div>
                             <div className="col-md-4 col-12 d-flex justify-content-center flex-wrap">
                                 <div className="">
@@ -224,26 +247,28 @@ class PageEventos extends Component {
                                 </div>
                                 <div className="col-12 mb-3">
                                     <label>Fecha</label>
-                                    <input type="date" className="fw-bold text-center" id="date" name="eve_fecha" onChange={this.handleChange} value={form ? form.eve_fecha.slice(0, 10) : ""} />
+                                    <input type="date" className="fw-bold text-center" id="date" name="eve_fecha" onChange={this.handleChange} value={this.state.tipoModal === 'actualizar' ? form.eve_fecha.slice(0,10) :undefined} />
                                     <label>Hora</label>
                                     <input type="time" className="fw-bold text-center" id="time" name="eve_hora" onChange={this.handleChange} value={form ? form.eve_hora : ""} />
                                 </div>
-                                <div className="col-12">
-                                    {this.state.tipoModal === 'actualizar' ?
-                                        <>
-                                            <FontAwesomeIcon icon={faArrowAltCircleLeft} className="align-items-center h4" />
-                                            <span className="">0</span>
-                                            <span className="">:</span>
-                                            <span className="">0</span>
-                                            <FontAwesomeIcon icon={faArrowAltCircleRight} className="align-items-center h4" />
-                                        </> :
-                                        <>
-                                            <span className="match-score-number">0</span>
-                                            <span className="match-score-divider">:</span>
-                                            <span className="match-score-number">0</span>
-                                        </>
-                                    }
-                                </div>
+                                {this.state.tipoModal === 'actualizar' ?
+                                    <>
+                                        <div className="d-flex align-items-center">
+                                            <div className="font-score d-inline">
+                                                <input type="number" name="eve_marcador_equipo1" onChange={this.handleChange} value={form?form.eve_marcador_equipo1:""} className="input-score" />
+                                            </div>
+                                            <span className="font-score">:</span>
+                                            <div className="font-score d-inline">
+                                                <input type="number" name="eve_marcador_equipo2" onChange={this.handleChange} value={form?form.eve_marcador_equipo2:""} className="input-score" />
+                                            </div>
+                                        </div>
+                                    </> :
+                                    <>
+                                        <span className="match-score-number">0</span>
+                                        <span className="match-score-divider">:</span>
+                                        <span className="match-score-number">0</span>
+                                    </>
+                                }
                                 {/* <div className="col-12 match-time-lapsed w-100">
                                     00'
                                 </div> */}
@@ -251,7 +276,7 @@ class PageEventos extends Component {
                             <div className="col-md-4 col-12 d-flex justify-content-center flex-wrap">
                                 <div className="team-logo col-12">
                                     {this.state.tipoModal === 'actualizar' ?
-                                        <img className="img-team" src={form.eve_imagen_e2} alt="team2" />
+                                        <img className="img-team" src={this.state.eve_imagen_e2} alt="team2" />
                                         :
                                         <select className="text-center rounded-bottom border border-dark shadow-lg" name="eve_equipo2" onChange={this.handleChange}>
                                             <option value="default" >Equipo 2</option>
@@ -263,7 +288,7 @@ class PageEventos extends Component {
                                         </select>
                                     }
                                 </div>
-                                <h2>{this.state.tipoModal === 'actualizar' ? form.eve_equipo2 : "Equipo 2"}</h2>
+                                <h2>{this.state.tipoModal === 'actualizar' ? this.state.eve_equipo2_nombre : "Equipo 2"}</h2>
                             </div>
                         </div>
                     </div>
@@ -271,7 +296,7 @@ class PageEventos extends Component {
                 <ModalFooter>
                     {
                         this.state.tipoModal === 'insertar' ? <button className="btn btn-success" onClick={() => this.peticionPost()}>Insertar</button>
-                            : <button className="btn btn-success" onClick={() => this.peticionPut()}>Modificar</button>
+                            : <button className="btn btn-success" onClick={() => this.peticionPut()} >Modificar</button>
                     }
                     <button className="btn btn-danger" onClick={() => this.modalInsertar()}>Cancelar</button>
                 </ModalFooter>

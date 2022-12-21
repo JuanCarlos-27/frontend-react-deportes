@@ -7,7 +7,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Cookies from 'universal-cookie'
 
 const cookies = new Cookies();
-const url = 'http://127.0.0.1:9000/api/equipos';
+const url = 'http://141.148.53.245:9000/api/equipos';
 const field_id = '/equ_id/'
 
 class PageEquipos extends Component {

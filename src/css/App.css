@@ -94,7 +94,7 @@ label{
 }
 
 .match-score-number {
-	font-size: 50px;
+	font-size: 40px;
 	font-weight: 600;
 	line-height: 1;
 	color: #000;
@@ -117,9 +117,10 @@ label{
 	font-size: 26px;
 	font-weight: bold;
 }
-
-.match-referee {
-	margin-top: 12px;
+.font-score{
+	font-family: 'Soccer Scoreboard', Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 50px;
+	font-weight: bolder;
 }
 
 .wrap-error {
@@ -156,6 +157,20 @@ label{
 	transform:translateX(100%);
 	/* Apply animation to this element */
 	animation: scroll-left 10s linear infinite;
+}
+
+.input-score{
+	width: 80px;
+	padding: 0;
+	text-align: center;
+	border: none;
+	outline: none;
+	font-weight: bolder;
+	color: red;
+}
+
+.input-score:focus{
+	border: 2px dashed #000;
 }
 
    /* Move it (define the animation) */

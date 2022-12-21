@@ -13,15 +13,13 @@ const cookies = new Cookies();
 class MenuInicial extends Component {
 
   state = {
-    estaLoguin: false
+    estaLoguin: false,
+    estaAdmin: false
   }
 
   componentDidMount() {
     if (cookies.get("usu_nombres")) {
       this.setState({ estaLoguin: true })
-    } else {
-      this.setState({ estaLoguin: false })
-      // window.location.href="./" /// redirigir al inicio
     }
   }
 
@@ -38,6 +36,7 @@ class MenuInicial extends Component {
         cookies.remove("usu_email", { path: "/" })
         cookies.remove("usu_nombres", { path: "/" })
         cookies.remove("usu_apellidos", { path: "/" })
+        cookies.remove("usu_rol", { path: "/" })
         this.setState({ estaLoguin: false })
         Swal.fire('¡Adios!', '', 'success')
         window.location.href = '/PageLogin'

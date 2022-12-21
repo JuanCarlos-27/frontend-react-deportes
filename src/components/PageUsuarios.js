@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import Cookies from 'universal-cookie'
 
 const cookies = new Cookies();
-const url = 'http://127.0.0.1:9000/api/usuarios';
+const url = 'http://141.148.53.245:9000/api/usuarios';
 const field_id = '/usu_id/'
 
 class PageUsuarios extends Component {
@@ -27,8 +27,6 @@ class PageUsuarios extends Component {
     peticionGet = () => {
         axios.get(url).then(response => {
             this.setState({ data: response.data })
-            console.log('Petición GET exitosa! ')
-            console.log(response.data)
         }).catch(error => {
             console.log(error.message);
         })
@@ -56,7 +54,6 @@ class PageUsuarios extends Component {
         })
     }
     peticionPut = () => {
-        // console.log(Object.keys(this.state.form)[0])
         axios.put(url + field_id + this.state.form.usu_id, this.state.form).then(response => {
             this.modalInsertar();
             this.peticionGet();

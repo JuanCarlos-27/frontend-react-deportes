@@ -13,21 +13,21 @@ class PageInicioAdmin extends Component {
     }
 
     peticionGetEventos = () => {
-        axios.get('http://127.0.0.1:9000/api/eventos/').then(response => {
+        axios.get('http://141.148.53.245:9000/api/eventos/').then(response => {
             this.setState({ totalEventos: response.data.length })
         }).catch(error => {
             console.log(error.message);
         })
     }
     peticionGetEquipos = () => {
-        axios.get('http://127.0.0.1:9000/api/equipos/').then(response => {
+        axios.get('http://141.148.53.245:9000/api/equipos/').then(response => {
             this.setState({ totalEquipos: response.data.length })
         }).catch(error => {
             console.log(error.message);
         })
     }
     peticionGetUsuarios= () => {
-        axios.get('http://127.0.0.1:9000/api/usuarios/').then(response => {
+        axios.get('http://141.148.53.245:9000/api/usuarios/').then(response => {
             this.setState({ totalUsuarios: response.data.length })
         }).catch(error => {
             console.log(error.message);

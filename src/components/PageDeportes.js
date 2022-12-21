@@ -7,7 +7,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Cookies from 'universal-cookie'
 
 const cookies = new Cookies();
-const url = 'http://127.0.0.1:9000/api/deportes';
+const url = 'http://141.148.53.245:9000/api/deportes';
 const field_id = '/dep_id/'
 
 class PageDeportes extends Component {
@@ -150,8 +150,7 @@ class PageDeportes extends Component {
                                             {deporte.dep_descripcion}
                                         </p>
                                     </div>
-                                    <div className="card-footer d-flex justify-content-between align-items-center">
-                                        <small className="text-muted m-0 p-0">Last updated 3 mins ago</small>
+                                    <div className="card-footer d-flex justify-content-center align-items-center">
                                         <div className="">
                                             <button className='btn btn-primary mx-2'onClick={() => { this.seleccionarDeporte(deporte); this.modalInsertar(); }}><FontAwesomeIcon icon={faEdit} /></button>
                                             <button className="btn btn-danger" onClick={() => { this.peticionDelete(deporte.dep_id) }} ><FontAwesomeIcon icon={faTrash} /></button>

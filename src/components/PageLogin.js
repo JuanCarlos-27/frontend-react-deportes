@@ -3,7 +3,7 @@ import Cookies from "universal-cookie";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const urlLogin = "http://localhost:9000/api/usuarios";
+const urlLogin = "http://141.148.53.245:9000/api/usuarios";
 const cookies = new Cookies();
 
 class PageLogin extends Component {
@@ -35,7 +35,6 @@ class PageLogin extends Component {
 
         await axios.get(urlLogin + "/" + name + "/" + pwd)
             .then(response => {
-                //console.log(response.data)
                 return response.data
             }).then(response => {
                 if (response.length > 0) {
@@ -44,6 +43,7 @@ class PageLogin extends Component {
                     cookies.set("usu_email", resp.usu_email, { path: "/" })
                     cookies.set("usu_nombres", resp.usu_nombres, { path: "/" })
                     cookies.set("usu_apellidos", resp.usu_apellidos, { path: "/" })
+                    cookies.set("usu_rol", resp.usu_rol, { path: "/" })
                     Swal.fire({      /// Muestra mensaje de bienvenida.
                         position: 'top-center',
                         icon: 'success',
@@ -71,7 +71,7 @@ class PageLogin extends Component {
             <div className="card m-3">
                 <div className="row g-0 d-flex align-items-center">
                     <div className="col-lg-4 col-sm-12 d-lg-flex">
-                        <img src="https://img.freepik.com/vector-gratis/ilustracion-dia-nacional-deporte_23-2148995301.jpg?w=2000" alt="sports image"
+                        <img src="https://img.freepik.com/vector-gratis/ilustracion-dia-nacional-deporte_23-2148995301.jpg?w=2000" alt="sports"
                             className="w-100" />
                     </div>
                     <div className="col-lg-8">

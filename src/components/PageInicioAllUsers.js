@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-const url = 'http://127.0.0.1:9000/api/eventos'
+const url = 'http://141.148.53.245:9000/api/eventos'
 
 class PageInicioAllUsers extends Component {
     state = {
