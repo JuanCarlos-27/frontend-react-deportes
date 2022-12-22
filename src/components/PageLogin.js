@@ -3,7 +3,7 @@ import Cookies from "universal-cookie";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const urlLogin = "http://141.148.53.245:9000/api/usuarios";
+const urlLogin = "https://backend-nodejs-deportes-production.up.railway.app/api/usuarios";
 const cookies = new Cookies();
 
 class PageLogin extends Component {

@@ -7,7 +7,7 @@ import Cookies from 'universal-cookie'
 import Swal from "sweetalert2";
 
 const cookies = new Cookies();
-const url = 'http://141.148.53.245:9000/api/eventos'
+const url = 'https://backend-nodejs-deportes-production.up.railway.app/api/eventos'
 class PageEventos extends Component {
     state = {
         dataEventos: [],
@@ -40,14 +40,14 @@ class PageEventos extends Component {
         })
     }
     peticionGetEquipos = () => {
-        axios.get('http://141.148.53.245:9000/api/equipos/').then(response => {
+        axios.get('https://backend-nodejs-deportes-production.up.railway.app/api/equipos/').then(response => {
             this.setState({ dataEquipos: response.data })
         }).catch(error => {
             console.log(error.message);
         })
     }
     peticionGetDeportes = () => {
-        axios.get('http://141.148.53.245:9000/api/deportes/').then(response => {
+        axios.get('https://backend-nodejs-deportes-production.up.railway.app/api/deportes/').then(response => {
             this.setState({ dataDeportes: response.data })
         }).catch(error => {
             console.log(error.message);

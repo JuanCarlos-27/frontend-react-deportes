@@ -7,7 +7,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Cookies from 'universal-cookie'
 
 const cookies = new Cookies();
-const url = 'http://141.148.53.245:9000/api/deportes';
+const url = 'https://backend-nodejs-deportes-production.up.railway.app/api/deportes';
 const field_id = '/dep_id/'
 
 class PageDeportes extends Component {

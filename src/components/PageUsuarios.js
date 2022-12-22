@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import Cookies from 'universal-cookie'
 
 const cookies = new Cookies();
-const url = 'http://141.148.53.245:9000/api/usuarios';
+const url = 'https://backend-nodejs-deportes-production.up.railway.app/api/usuarios';
 const field_id = '/usu_id/'
 
 class PageUsuarios extends Component {
